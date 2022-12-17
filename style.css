@@ -4,6 +4,15 @@
   box-sizing: content-box;
 }
 
+html {
+  --scrollbarBG: transparent;
+  --thumbBG: rgba(156, 173, 242, 1);
+}
+
+body::-webkit-scrollbar {
+  width: 0;
+}
+
 body {
   background-image: url("./background.png");
   background-position: center center;
@@ -26,14 +35,32 @@ h6 {
 }
 
 main {
-  padding: 12.5rem 6.25rem;
   /* Making the background image 60% opaque */
   background-color: rgba(255, 255, 255, 0.4);
+  overflow-y: auto;
+  max-height: 100vh;
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+
+main::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+main::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+
+main::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG);
+  border-radius: 6px;
+  border: 3px solid var(--scrollbarBG);
 }
 
 section {
   display: grid;
   background-color: rgba(245, 247, 255, 0.85);
+  margin: 12.5rem 6.25rem;
   padding: 3.75rem;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -51,6 +78,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
+  width: 100%;
 }
 
 .input-group {
@@ -64,14 +92,10 @@ form {
   border: 1px solid rgba(219, 227, 255, 1);
 }
 
-/* Make the width of input boxes 100% */
-.input-group input {
-  width: 100%;
-}
-
 input {
   border: none;
   padding: 0.5rem 0;
+  width: 100%;
 }
 
 input:focus {
@@ -79,15 +103,44 @@ input:focus {
 }
 
 span {
-  border: 1px solid;
+  border-left: 1px solid rgba(156, 173, 242, 1);
+  height: 1.25rem;
+}
+
+i {
+  color: rgba(156, 173, 242, 1);
 }
 
 button {
   padding: 1rem 0;
+  cursor: pointer;
+  width: 100%;
   background: linear-gradient(113.87deg, #2663df 14.81%, #758ff0 88.76%);
   box-shadow: 0px 6px 18px #9cadf2;
   backdrop-filter: drop-shadow(0 6px 18px rgba(156, 173, 242, 1));
   border-radius: 0.625rem;
   border: none;
   color: white;
+}
+
+@media (max-width: 768px) {
+  img {
+    width: 100%;
+  }
+
+  main::-webkit-scrollbar {
+    width: 0;
+  }
+
+  section {
+    grid-template-columns: 1fr;
+    padding: 2.5rem 2rem;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .container {
+    align-items: center;
+    text-align: center;
+  }
 }
