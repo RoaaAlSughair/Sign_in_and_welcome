@@ -14,7 +14,7 @@ body::-webkit-scrollbar {
 }
 
 body {
-  background-image: url("./background.png");
+  background-image: url('./background.png');
   background-position: center center;
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -22,7 +22,7 @@ body {
 }
 
 body:not(h1, h2, h3, h4, h5, h6) {
-  font-family: "Mulish";
+  font-family: 'Mulish';
 }
 
 h1,
@@ -79,6 +79,20 @@ form {
   flex-direction: column;
   gap: 0.625rem;
   width: 100%;
+}
+
+.input-and-message {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.input-and-message p {
+  color: red;
+}
+
+.hide {
+  display: none;
 }
 
 .input-group {

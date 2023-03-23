@@ -18,6 +18,11 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script
+      src="https://code.jquery.com/jquery-3.6.2.min.js"
+      integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA="
+      crossorigin="anonymous"
+    ></script>
     <title>Register</title>
   </head>
   <body>
@@ -28,32 +33,147 @@
           <h1>Create an account</h1>
           <p>Go ahead and sign up, let everyone know how awesome you are!</p>
           <form>
-            <div class="input-group">
-              <i class="fa fa-user"></i>
-              <span></span>
-              <input type="text" placeholder="Username" />
+            <div class="input-and-message">
+              <div class="input-group">
+                <i class="fa fa-user"></i>
+                <span></span>
+                <input
+                  type="text"
+                  required="required"
+                  minlength="5"
+                  maxlength="15"
+                  pattern="^([a-zA-Z]{1})[a-zA-Z0-9]+([a-zA-Z]{1})$"
+                  placeholder="Username"
+                />
+              </div>
+              <p class="hide">
+                <small>
+                  Username should be 5-15 chars, should start with letter, and
+                  contain letters and numbers only.
+                </small>
+              </p>
             </div>
-            <div class="input-group">
-              <i class="fa fa-envelope"></i>
-              <span></span>
-              <input type="email" placeholder="Email" />
+            <div class="input-and-message">
+              <div class="input-group">
+                <i class="fa fa-envelope"></i>
+                <span></span>
+                <input
+                  type="email"
+                  required="required"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$"
+                  placeholder="Email"
+                />
+              </div>
+
+              <p class="hide"><small>Invalid email address.</small></p>
             </div>
-            <div class="input-group">
-              <i class="fa fa-lock"></i>
-              <span></span>
-              <input type="password" placeholder="Password" />
+            <div class="input-and-message">
+              <div class="input-group">
+                <i class="fa fa-lock"></i>
+                <span></span>
+                <input
+                  type="password"
+                  required="required"
+                  minlength="8"
+                  placeholder="Password"
+                />
+              </div>
+              <p class="hide">
+                <small> Password should be 8 chars at least. </small>
+              </p>
             </div>
-            <div class="input-group">
-              <i class="fa fa-lock"></i>
-              <span></span>
-              <input type="password" placeholder="Confirm password" />
+            <div class="input-and-message">
+              <div class="input-group">
+                <i class="fa fa-lock"></i>
+                <span></span>
+                <input
+                  type="password"
+                  required="required"
+                  minlength="8"
+                  placeholder="Confirm password"
+                />
+              </div>
+              <p class="hide">
+                <small> Password should match for both fields. </small>
+              </p>
             </div>
-            <a href="#"
-              ><button><small>Create Account</small></button></a
-            >
+            <button type="submit">Create Account</button>
           </form>
         </div>
       </section>
     </main>
+    <script>
+      $(document).ready(() => {
+        let userName;
+        let email;
+        let password;
+
+        $('input[type=text]').change((e) => {
+          let message = e.currentTarget.parentElement.parentElement.children[1];
+          if ($('input[type=text]').is(':valid')) {
+            if (!$(message).hasClass('hide')) $(message).toggleClass('hide');
+
+            userName = $('input[type=text]').val();
+          } else {
+            if (e.target.value)
+              $(
+                e.currentTarget.parentElement.parentElement.children[1]
+              ).toggleClass('hide');
+            userName = null;
+          }
+        });
+        $('input[type=email]').change((e) => {
+          let message = e.currentTarget.parentElement.parentElement.children[1];
+          if ($('input[type=email]').is(':valid')) {
+            if (!$(message).hasClass('hide')) $(message).toggleClass('hide');
+
+            email = $('input[type=email]').val();
+          } else {
+            if (e.target.value) $(message).toggleClass('hide');
+            email = null;
+          }
+        });
+        $('input[type=password]:first, input[type=password]:last').change(
+          (e) => {
+            let message =
+              e.currentTarget.parentElement.parentElement.children[1];
+            if (
+              $('input[type=password]:first').is(':valid') &&
+              $('input[type=password]:last').is(':valid')
+            ) {
+              if (
+                $('input[type=password]:first').val() ===
+                $('input[type=password]:last').val()
+              ) {
+                if (!$(message).hasClass('hide'))
+                  $(message).toggleClass('hide');
+
+                password = $('input[type=password]').val();
+              }
+            } else {
+              if (e.target.value) $(message).toggleClass('hide');
+              password = null;
+            }
+          }
+        );
+        $('form').submit((e) => {
+          e.preventDefault();
+          $.post(
+            'https://goldblv.com/api/hiring/tasks/register',
+            {
+              username: userName,
+              email: email,
+              password: password,
+            },
+            (data, status, xhr) => {
+              if (status === 200) {
+                localStorage.setItem('email', email);
+                location.href = './loggedIn.html';
+              }
+            }
+          );
+        });
+      });
+    </script>
   </body>
 </html>

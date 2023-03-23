@@ -19,7 +19,13 @@
         <img src="./LoggedIn-img.png" />
         <div class="container">
           <h1>Successfully Logged In</h1>
-          <p>User@gmail.com</p>
+          <p>
+            <script>
+              document.write(
+                localStorage.getItem("email") || "example@gmail.com"
+              );
+            </script>
+          </p>
         </div>
       </section>
     </main>
